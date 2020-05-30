@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import pprint
 import json
+import re
 
 # funkcja do ekstrakcji składowych opinii
 
@@ -10,9 +11,11 @@ import json
 def extract_feature(opinion, selector, attribute=None):
     try:
         if attribute:
-            return opinion.select(selector).pop()[attribute].strip()
+            return opinion.select(selector).pop(0)[attribute].strip()
+        elif "review-feature__title" in selector:
+            return opinion.select(selector)
         else:
-            return opinion.select(selector).pop().text.strip()
+            return opinion.select(selector).pop(0).text.strip()
     except IndexError:
         return None
 
@@ -21,6 +24,7 @@ def replace_formatting(selector):
         return selector.replace("\n", ", ").replace("\r", ", ")
     except AttributeError:
         return selector
+
 
 # słownik z selektorami
 selectors = {
@@ -52,7 +56,7 @@ while url:
     page_dom = BeautifulSoup(response.text, "html.parser")
 
     # Wyciągnięcie z kodu strony fragmentów odpowiadających poszczególym opiniom
-    opinions = page_dom.select("li.js_product-review")
+    opinions = page_dom.select("div.js_product-review")
 
     # Dla wszystkich opinii z danej strony wydobycie ich składowych
     for opinion in opinions:

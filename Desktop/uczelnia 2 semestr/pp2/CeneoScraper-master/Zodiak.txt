@@ -1,0 +1,18 @@
+zodiac = {1: ['Capricorn','Aquarius],19,
+        2: ['Aquarius']
+        }
+
+def zodiac_sign(day, month, year): 
+    index = lambda x: 0 if x<zodiac[month][2] else 1
+    return zodiac[month][index(day)] 
+
+ZODIAC = [(1900, "Rat"), (1901, "Ox"), (1902, "Tiger"), (1903, "Rabbit"), (1904\
+, "Dragon"), (1905, "Snake"), (1906, "Horse"), (1907, "Sheep"), (1908, "Monkey"\
+), (1909, "Rooster"), (1910, "Dog"), (1911, "Pig")]
+
+def getChineseZodiac(year):
+    index = (year - ZODIAC[0][0]) % 12
+    return ZODIAC[index]
+
+year = input("Enter a year: ")
+getChineseZodiac(year)
